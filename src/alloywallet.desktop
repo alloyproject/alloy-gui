@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Alloy Wallet
+Comment=Alloy wallet
+Exec=alloywallet %U
+Terminal=false
+Type=Application
+Icon=alloy
+MimeType=x-scheme-handler/alloy;
+Categories=Office;Finance;
