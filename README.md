@@ -40,6 +40,6 @@ Run make to build the wallet:
 
 When the build has finished, to copy the Alloy GUi app into your Application folder type:
 
-```cp Alloy.app ~/Applications```
+```cp -r Alloy.app ~/Applications```
 
 You can now run the Alloy GUI from Finder. Make sure that alloyd is running in a terminal window else the GUI will crash on startup.
