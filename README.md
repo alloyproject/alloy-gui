@@ -16,7 +16,7 @@ Open a Terminal and type:
 
 Download a copy of the alloy-gui source:
 
-```https://github.com/alloy-project/alloy-gui```
+```git clone https://github.com/alloy-project/alloy-gui```
 
 Enter the alloy-gui directory:
 
