@@ -25,7 +25,7 @@ Enter the alloy-gui directory:
 
 Download the latest alloycoin codebase:
 
-```git submodule add https://github.com/alloy-project/alloy```
+```git submodule add -f https://github.com/alloy-project/alloy```
 
 Create a build directory and enter it:
 
