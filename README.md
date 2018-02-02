@@ -7,6 +7,25 @@ Portions Copyright (c) 2012-2017, The CryptoNote Developers, The Bytecoin Develo
 
 Alloy's GUI Wallet is licensed under the "MIT License" for more info, refer to the [License](LICENSE) file.
 
+# How to build for Ubuntu Linux
+
+```sudo apt-get -y install build-essential libssl-dev libboost-all-dev  
+sudo apt-get -y install gcc-4.8 g++-4.8 libboost1.55-all-dev git cmake
+sudo apt-get install qt5-default qttools5-dev-tools```
+
+
+```git clone https://github.com/alloy-project/alloy-gui```
+```cd alloy-gui```
+```git submodule add -f https://github.com/alloy-project/alloy```
+
+```cd alloy-gui```
+
+```mkdir build ; cd build```
+```cmake ..```
+```make```
+```./Alloy```
+
+
 # How to build for Mac OS 
 
 Install Homebrew from here: https://brew.sh/
