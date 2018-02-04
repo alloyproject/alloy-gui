@@ -210,7 +210,7 @@ elseif (UNIX)
 
     include_directories(/usr/include/malloc)
 
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes -std=c++14 -stdlib=libc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes  -stdlib=libc++")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -maes -D_DARWIN_C_SOURCE")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Cocoa -framework OpenGL -framework CoreFoundation -framework Carbon -framework IOKit -L/usr/lib")
 
@@ -228,7 +228,7 @@ elseif (UNIX)
 
     set(PLATFORM_DIR Linux)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes -std=c++14")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes -std=c14")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes ")
   endif (APPLE)
 endif ()
 
