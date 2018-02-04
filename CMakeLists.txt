@@ -39,8 +39,9 @@ include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
 
 set(VERSION "")
-configure_file("alloy/src/version.h.in" "version.h")
-configure_file("src/CryptoNoteWalletConfig.h.in" "CryptoNoteWalletConfig.h")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/miniupnpcstrings.h.in "miniupnpcstrings.h")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/alloy/src/version.h.in "version.h")
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/CryptoNoteWalletConfig.h.in "CryptoNoteWalletConfig.h")
 
 add_definitions(-DGIT_REVISION="${GIT_REVISION}")
 
