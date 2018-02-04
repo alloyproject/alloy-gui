@@ -11,7 +11,7 @@ Alloy's GUI Wallet is licensed under the "MIT License" for more info, refer to t
 
 ```sudo apt-get -y install build-essential libssl-dev libboost-all-dev```
 
-```sudo apt-get -y install gcc-4.8 g++-4.8 libboost1.55-all-dev git cmake```
+```sudo apt-get -y install gcc-4.8 g++-4.8  git cmake```
 
 ```sudo apt-get install qt5-default qttools5-dev-tools```
 
