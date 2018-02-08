@@ -1,19 +1,19 @@
-// Copyright (c) 2012-2017, The CryptoNote developers, The Alloy developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 //
-// This file is part of Alloy.
+// This file is part of Bytecoin.
 //
-// Alloy is free software: you can redistribute it and/or modify
+// Bytecoin is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Lesser General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Alloy is distributed in the hope that it will be useful,
+// Bytecoin is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with Alloy.  If not, see <http://www.gnu.org/licenses/>.
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
@@ -50,7 +50,8 @@ public:
   void swap(MemoryMappedFile& other);
 
 private:
-  int m_file;
+  void* m_fileHandle;
+  void* m_mappingHandle;
   std::string m_path;
   uint64_t m_size;
   uint8_t* m_data;

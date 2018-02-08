@@ -1,12 +1,19 @@
-/*
- * Copyright (c) 2017-2018, The Alloy Developers.
- * Portions Copyright (c) 2012-2017, The CryptoNote Developers, The Bytecoin Developers.
- *
- * This file is part of Alloy.
- *
- * This file is subject to the terms and conditions defined in the
- * file 'LICENSE', which is part of this source code package.
- */
+// Copyright (c) 2015-2017, The Bytecoin developers
+//
+// This file is part of Bytecoin.
+//
+// Bytecoin is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Bytecoin is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public License
+// along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QApplication>
 #include <QLocalSocket>
@@ -20,7 +27,7 @@ namespace WalletGui {
 
 namespace {
 
-const char PAYMENT_SERVER_NAME[] = "alloy-payment-server-YrmF1jZEv5ahqXuD99d5H1jXQ";
+const char PAYMENT_SERVER_NAME[] = "bytecoin-payment-server-YrmF1jZEv5ahqXuD99d5H1jXQ";
 
 }
 

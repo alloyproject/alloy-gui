@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 //
 // This file is part of Bytecoin.
 //
@@ -17,27 +17,11 @@
 
 #pragma once
 
-class QUrl;
+#include <string>
 
-namespace WalletGui {
+namespace System {
 
-class IApplicationEventHandlerObserver {
-public:
-  virtual ~IApplicationEventHandlerObserver() {}
-  virtual void urlReceived(const QUrl& _url) = 0;
-  virtual void screenLocked() = 0;
-  virtual void screenUnlocked() = 0;
-};
-
-class IApplicationEventHandler {
-public:
-  virtual ~IApplicationEventHandler() {}
-
-  virtual void init() = 0;
-  virtual QUrl getLastReceivedUrl() = 0;
-  virtual void sendUrl(const QUrl& _url) = 0;
-  virtual void addObserver(IApplicationEventHandlerObserver* _observer) = 0;
-  virtual void removeObserver(IApplicationEventHandlerObserver* _observer) = 0;
-};
+std::string lastErrorMessage();
+std::string errorMessage(int);
 
 }

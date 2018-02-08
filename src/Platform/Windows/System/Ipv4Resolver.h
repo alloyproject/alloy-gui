@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2017, The Bytecoin developers
+// Copyright (c) 2012-2017, The CryptoNote developers, The Bytecoin developers
 //
 // This file is part of Bytecoin.
 //
@@ -17,32 +17,26 @@
 
 #pragma once
 
-#include <QObject>
+#include <string>
 
-namespace WalletGui {
+namespace System {
 
-struct Job {
-  QString jobId;
-  quint32 target;
-  QByteArray blob;
-};
+class Dispatcher;
+class Ipv4Address;
 
-class IMinerWorkerObserver {
+class Ipv4Resolver {
 public:
-  virtual ~IMinerWorkerObserver() {}
-  virtual void shareFound(const QString& _jobId, quint32 _nonce, const QByteArray& _result) = 0;
-};
+  Ipv4Resolver();
+  explicit Ipv4Resolver(Dispatcher& dispatcher);
+  Ipv4Resolver(const Ipv4Resolver&) = delete;
+  Ipv4Resolver(Ipv4Resolver&& other);
+  ~Ipv4Resolver();
+  Ipv4Resolver& operator=(const Ipv4Resolver&) = delete;
+  Ipv4Resolver& operator=(Ipv4Resolver&& other);
+      Ipv4Address resolve(const std::string& host);
 
-class IMinerWorker {
-public:
-  virtual ~IMinerWorker() {}
-
-  virtual void start() = 0;
-  virtual void stop() = 0;
-  virtual void addObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void removeObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void addAlternateObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void removeAlternateObserver(IMinerWorkerObserver* _observer) = 0;
+private:
+  Dispatcher* dispatcher;
 };
 
 }

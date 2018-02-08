@@ -15,34 +15,16 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with Bytecoin.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
-#include <QObject>
+#import <Foundation/NSObject.h>
+#import <Foundation/NSNotification.h>
 
 namespace WalletGui {
-
-struct Job {
-  QString jobId;
-  quint32 target;
-  QByteArray blob;
-};
-
-class IMinerWorkerObserver {
-public:
-  virtual ~IMinerWorkerObserver() {}
-  virtual void shareFound(const QString& _jobId, quint32 _nonce, const QByteArray& _result) = 0;
-};
-
-class IMinerWorker {
-public:
-  virtual ~IMinerWorker() {}
-
-  virtual void start() = 0;
-  virtual void stop() = 0;
-  virtual void addObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void removeObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void addAlternateObserver(IMinerWorkerObserver* _observer) = 0;
-  virtual void removeAlternateObserver(IMinerWorkerObserver* _observer) = 0;
-};
-
+  class INotificationMonitorObserver;
 }
+
+@interface NotificationMonitor: NSObject {
+  WalletGui::INotificationMonitorObserver* m_observer;
+}
+-(id) init: (WalletGui::INotificationMonitorObserver*) observer;
+-(void) receive: (NSNotification*) notification;
+@end
