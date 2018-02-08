@@ -38,9 +38,12 @@ Alloy's GUI Wallet is licensed under the "MIT License" for more info, refer to t
 
 Install Homebrew from here: https://brew.sh/
 
+```mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew```
+
 Open a Terminal and type: 
 
 ```brew install qt5```
+```brew install cmake```
 
 Download a copy of the alloy-gui source:
 
