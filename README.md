@@ -43,6 +43,7 @@ Install Homebrew from here: https://brew.sh/
 Open a Terminal and type: 
 
 ```brew install qt5```
+
 ```brew install cmake```
 
 Download a copy of the alloy-gui source:
