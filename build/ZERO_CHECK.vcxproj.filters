@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\opt\alloy-gui\build\CMakeFiles\39271440a1c8ba3aecd7bd4ceaa9417d\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{16FFEB5C-1FAF-3882-94DA-7EB08E8F6C52}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

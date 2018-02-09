@@ -1,258 +1,298 @@
-cmake_minimum_required(VERSION 2.8.6)
+cmake_minimum_required(VERSION 3.0.2)
+
 include(CryptoNoteWallet.cmake)
+ 
+
+
+if(WIN32) 
+#"C:\Program Files\CMake\bin\cmake.exe" -G  "Visual Studio 14 2015 Win64" ..
+#msbuild Alloy.sln /p:Configuration=Release
+
+set(BOOST_LIBRARYDIR c:/boost_1_63_0/lib64-msvc-14.0)
+set(BOOST_INCLUDEDIR c:/boost_1_63_0/boost)
+set(BOOST_ROOT c:/boost_1_63_0)
+#b2 variant=debug,release link=static runtime-link=static address-model=64
+
+
+
+set(CMAKE_PREFIX_PATH C:/Qt/Qt5.10.0/5.10.0/msvc2015_64)
+ 
+set(PROJECT_SOURCE_DIR c:/opt/alloy-gui)
+endif()
+ 
+
+
 
 project(${CN_PROJECT_NAME})
 
-execute_process(COMMAND git log -1 --pretty=format:%h
-WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-OUTPUT_VARIABLE GIT_REVISION)
+set(VERSION_MAJOR 1)
+set(VERSION_MINOR 2)
+set(VERSION_PATCH 0)
 
-set(CRYPTONOTE_LIB cryptonote)
+message(STATUS "${PROJECT_BINARY_DIR}")
+find_package(Git)
+find_package(Boost 1.58 REQUIRED COMPONENTS
+    date_time
+    filesystem
+    program_options
+    regex
+    serialization
+    system
+    thread
+    chrono)
 
-include_directories(${CMAKE_BINARY_DIR}
-  src
-  include
-  alloy/external
-  alloy/external/rocksdb/include/
-  alloy/include
-  alloy/src
-)
+find_package(Qt5 REQUIRED COMPONENTS
+    Core
+    Gui
+    Widgets
+    Network
+    DBus)
 
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Network REQUIRED)
-find_package(Qt5DBus REQUIRED)
+#set(EXTERNAL_CMAKE_ARGS
+#    -DSTATIC:BOOL=OFF
+#    -DBoost_USE_STATIC_LIBS:BOOL=ON
+#    -DBoost_USE_STATIC_RUNTIME:BOOL=OFF)
+#include(ExternalProject)
+#ExternalProject_Add(Alloy
+#    SOURCE_DIR ${CMAKE_SOURCE_DIR}/alloy
+#    PREFIX ${CMAKE_CURRENT_BINARY_DIR}/Alloy
+#    CMAKE_ARGS 
+#        -DSTATIC:BOOL=OFF
+#        -DBoost_USE_STATIC_LIBS:BOOL=ON
+#        -DBoost_USE_STATIC_RUNTIME:BOOL=OFF
+#    INSTALL_COMMAND ""
+#    )
 
-include_directories(${Qt5DBus_INCLUDE_DIRS} alloy/external/rocksdb/include/ include src external "${CMAKE_CURRENT_BINARY_DIR}/version")
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
-if(STATIC)
-  set(Boost_USE_STATIC_LIBS ON)
-  set(Boost_USE_STATIC_RUNTIME ON)
+
+
+
+# Get and add-definition for AboutDialog.cpp
+# Set something in case git is not found
+set(GIT_REVISION "unknown")
+if (GIT_FOUND)
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} rev-parse --short HEAD
+        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+        OUTPUT_VARIABLE GIT_REVISION
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    message(STATUS "Git Revision ${GIT_REVISION}")
+else()
+    message(STATUS "Git not found")
 endif()
 
-find_package(Boost 1.58 REQUIRED COMPONENTS date_time filesystem program_options regex serialization system thread chrono)
-if ((${Boost_MAJOR_VERSION} EQUAL 1) AND (${Boost_MINOR_VERSION} EQUAL 54))
-  message(SEND_ERROR "Boost version 1.58 is unsupported, more details are available here http://goo.gl/RrCFmA")
-endif ()
-
-include_directories(${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
-
-set(VERSION "")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/miniupnpcstrings.h.in "miniupnpcstrings.h")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/alloy/src/version.h.in "version.h")
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/CryptoNoteWalletConfig.h.in "CryptoNoteWalletConfig.h")
-
-add_definitions(-DGIT_REVISION="${GIT_REVISION}")
+configure_file("${PROJECT_SOURCE_DIR}/src/CryptoNoteWalletConfig.h.in" "${PROJECT_BINARY_DIR}/CryptoNoteWalletConfig.h")
 
 set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTORCC ON)
+#set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set_property(SOURCE qrc_resources.cpp PROPERTY SKIP_AUTOMOC ON)
 
-file(GLOB_RECURSE CRYPTONOTE_SOURCES
-  alloy/external/miniupnpc/connecthostport.c
-  alloy/external/miniupnpc/igd_desc_parse.c
-  alloy/external/miniupnpc/minisoap.c
-  alloy/external/miniupnpc/miniupnpc.c
-  alloy/external/miniupnpc/miniwget.c
-  alloy/external/miniupnpc/minixml.c
-  alloy/external/miniupnpc/portlistingparse.c
-  alloy/external/miniupnpc/receivedata.c
-  alloy/external/miniupnpc/upnpcommands.c
-  alloy/external/miniupnpc/upnpreplyparse.c
-  alloy/src/BlockchainExplorer/BlockchainExplorer.cpp
-  alloy/src/BlockchainExplorer/BlockchainExplorerErrors.cpp
-  alloy/src/Common/Base58.cpp
-  alloy/src/Common/CommandLine.cpp
-  alloy/src/Common/Util.cpp
-  alloy/src/Common/StringTools.cpp
-  alloy/src/Common/JsonValue.cpp
-  alloy/src/Common/ConsoleTools.cpp
-  alloy/src/Common/MemoryInputStream.cpp
-  alloy/src/Common/PathTools.cpp
-  alloy/src/Common/StdInputStream.cpp
-  alloy/src/Common/StdOutputStream.cpp
-  alloy/src/Common/StreamTools.cpp
-  alloy/src/Common/StringOutputStream.cpp
-  alloy/src/Common/StringView.cpp
-  alloy/src/Common/VectorOutputStream.cpp
-  alloy/src/Common/ScopeExit.cpp
-  alloy/src/ConnectivityTool/ConnectivityTool.cpp
-  alloy/src/crypto/blake256.c
-  alloy/src/crypto/chacha8.c
-  alloy/src/crypto/crypto-ops-data.c
-  alloy/src/crypto/crypto-ops.c
-  alloy/src/crypto/crypto.cpp
-  alloy/src/crypto/groestl.c
-  alloy/src/crypto/hash-extra-blake.c
-  alloy/src/crypto/hash-extra-groestl.c
-  alloy/src/crypto/hash-extra-jh.c
-  alloy/src/crypto/hash-extra-skein.c
-  alloy/src/crypto/hash.c
-  alloy/src/crypto/jh.c
-  alloy/src/crypto/keccak.c
-  alloy/src/crypto/oaes_lib.c
-  alloy/src/crypto/random.c
-  alloy/src/crypto/skein.c
-  alloy/src/crypto/slow-hash.c
-  alloy/src/crypto/slow-hash.cpp
-  alloy/src/crypto/tree-hash.c
-  alloy/src/CryptoNoteCore/*.cpp
-  alloy/src/CryptoNoteProtocol/*.cpp
-  alloy/src/Daemon/*.cpp
-  alloy/src/HTTP/*.cpp
-  alloy/src/InProcessNode/InProcessNode.cpp
-  alloy/src/InProcessNode/InProcessNodeErrors.cpp
-  alloy/src/Logging/*.cpp
-  alloy/src/NodeRpcProxy/NodeErrors.cpp
-  alloy/src/NodeRpcProxy/NodeRpcProxy.cpp
-  alloy/src/P2p/*.cpp
-  alloy/src/Rpc/*.cpp
-  alloy/src/Serialization/*.cpp
-  alloy/src/Transfers/BlockchainSynchronizer.cpp
-  alloy/src/Transfers/SynchronizationState.cpp
-  alloy/src/Transfers/TransfersConsumer.cpp
-  alloy/src/Transfers/TransfersContainer.cpp
-  alloy/src/Transfers/TransfersSubscription.cpp
-  alloy/src/Transfers/TransfersSynchronizer.cpp
-  alloy/src/Wallet/*.cpp
-  alloy/src/WalletLegacy/KeysStorage.cpp
-  alloy/src/WalletLegacy/WalletLegacy.cpp
-  alloy/src/WalletLegacy/WalletHelper.cpp
-  alloy/src/WalletLegacy/WalletLegacySerializer.cpp
-  alloy/src/WalletLegacy/WalletLegacySerialization.cpp
-  alloy/src/WalletLegacy/WalletTransactionSender.cpp
-  alloy/src/WalletLegacy/WalletUnconfirmedTransactions.cpp
-  alloy/src/WalletLegacy/WalletUserTransactionsCache.cpp
-  alloy/src/System/ContextGroup.cpp
-  alloy/src/System/Event.cpp
-  alloy/src/System/EventLock.cpp
-  alloy/src/System/InterruptedException.cpp
-  alloy/src/System/Ipv4Address.cpp
-  alloy/src/System/TcpStream.cpp
-  alloy/src/JsonRpcServer/*.cpp
-  alloy/src/PaymentGate/*.cpp
-  alloy/src/PaymentGateService/*.cpp
-  alloy/src/Miner/*.cpp
-)
+set(SOURCES
+    src/Application/AddressBookManager.cpp
+    src/Application/BlogReader.cpp
+    src/Application/CommandLineParser.cpp
+    src/Application/LogFileWatcher.cpp
+    src/Application/MiningManager.cpp
+    src/Application/OptimizationManager.cpp
+    src/Application/SignalHandler.cpp
+    src/Application/WalletApplication.cpp
+    src/Application/WalletSplashScreen.cpp
+    src/CryptoNoteWrapper/BlockChainExplorerAdapter.cpp
+    src/CryptoNoteWrapper/BlockChainExplorerWorker.cpp
+    src/CryptoNoteWrapper/CommonNodeAdapter.cpp
+    src/CryptoNoteWrapper/CryptoNoteAdapter.cpp
+    src/CryptoNoteWrapper/GuardExecutor.cpp
+    src/CryptoNoteWrapper/InProcessNodeAdapter.cpp
+    src/CryptoNoteWrapper/InProcessNodeWorker.cpp
+    src/CryptoNoteWrapper/ProxyRpcNodeAdapter.cpp
+    src/CryptoNoteWrapper/ProxyRpcNodeWorker.cpp
+    src/CryptoNoteWrapper/SemaphoreUtils.cpp
+    src/CryptoNoteWrapper/WalletGreenAdapter.cpp
+    src/CryptoNoteWrapper/WalletGreenWorker.cpp
+    src/Gui/AddressBook/AddressBookDelegate.cpp
+    src/Gui/AddressBook/AddressBookFrame.cpp
+    src/Gui/AddressBook/DonationColumnDelegate.cpp
+    src/Gui/AddressBook/NewAddressDialog.cpp
+    src/Gui/BlockchainExplorer/BlockDetailsDialog.cpp
+    src/Gui/BlockchainExplorer/BlockExplorerFrame.cpp
+    src/Gui/BlockchainExplorer/FilteredBlockModel.cpp
+    src/Gui/BlockchainExplorer/TransactionsBlockModel.cpp
+    src/Gui/BlockchainExplorer/WindowedBlockModel.cpp
+    src/Gui/Common/AboutDialog.cpp
+    src/Gui/Common/AddressBookDialog.cpp
+    src/Gui/Common/BlockchainInstaller.cpp
+    src/Gui/Common/ChangePasswordDialog.cpp
+    src/Gui/Common/ClearableLineEdit.cpp
+    src/Gui/Common/CopyColumnDelegate.cpp
+    src/Gui/Common/CopyMagicLabel.cpp
+    src/Gui/Common/ExitWidget.cpp
+    src/Gui/Common/GlassFrame.cpp
+    src/Gui/Common/KeyDialog.cpp
+    src/Gui/Common/LinkLikeColumnDelegate.cpp
+    src/Gui/Common/MagicLabel.cpp
+    src/Gui/Common/NewPasswordDialog.cpp
+    src/Gui/Common/NewsFrame.cpp
+    src/Gui/Common/NewTransactionDelegate.cpp
+    src/Gui/Common/P2pBindPortErrorDialog.cpp
+    src/Gui/Common/PoolTransactionDetailsDialog.cpp
+    src/Gui/Common/QuestionDialog.cpp
+    src/Gui/Common/ResizableScrollArea.cpp
+    src/Gui/Common/RightAlignmentColumnDelegate.cpp
+    src/Gui/Common/TransactionDetailsDialog.cpp
+    src/Gui/Common/TransactionsAmountDelegate.cpp
+    src/Gui/Common/TransactionsHeaderView.cpp
+    src/Gui/Common/TransactionsTimeDelegate.cpp
+    src/Gui/Common/TransfersHeaderView.cpp
+    src/Gui/Common/WalletBlueButton.cpp
+    src/Gui/Common/WalletCancelButton.cpp
+    src/Gui/Common/WalletDescriptionLabel.cpp
+    src/Gui/Common/WalletGrayCheckBox.cpp
+    src/Gui/Common/WalletLinkLikeButton.cpp
+    src/Gui/Common/WalletNavigationButton.cpp
+    src/Gui/Common/WalletOkButton.cpp
+    src/Gui/Common/WalletTableView.cpp
+    src/Gui/Common/WalletTextLabel.cpp
+    src/Gui/Common/WalletTreeView.cpp
+    src/Gui/Common/WalletWindowedItemModel.cpp
+    src/Gui/MainWindow/MainWindow.cpp
+    src/Gui/MainWindow/WalletStatusBar.cpp
+    src/Gui/Mining/MinerDelegate.cpp
+    src/Gui/Mining/MiningFrame.cpp
+    src/Gui/Mining/PoolHeaderView.cpp
+    src/Gui/Mining/PoolTreeView.cpp
+    src/Gui/NoWallet/NoWalletFrame.cpp
+    src/Gui/Options/ConnectionOptionsFrame.cpp
+    src/Gui/Options/DonationAddressesModel.cpp
+    src/Gui/Options/DonationOptionsFrame.cpp
+    src/Gui/Options/OptimizationOptionsFrame.cpp
+    src/Gui/Options/OptionsDialog.cpp
+    src/Gui/Options/PrivacyFrame.cpp
+    src/Gui/Overview/OverviewFrame.cpp
+    src/Gui/Overview/OverviewHeaderFrame.cpp
+    src/Gui/Overview/OverviewHeaderGlassFrame.cpp
+    src/Gui/Overview/OverviewTransactionPoolModel.cpp
+    src/Gui/Overview/OverviewTransactionPoolTreeView.cpp
+    src/Gui/Overview/RecentTransactionsModel.cpp
+    src/Gui/Send/SendFrame.cpp
+    src/Gui/Send/SendGlassFrame.cpp
+    src/Gui/Send/TransferFrame.cpp
+    src/Gui/Transactions/DrawableTransfersModel.cpp
+    src/Gui/Transactions/FilteredByAddressTransactionsModel.cpp
+    src/Gui/Transactions/FilteredByAgeTransactionsModel.cpp
+    src/Gui/Transactions/FilteredByHashTransactionsModel.cpp
+    src/Gui/Transactions/FilteredByPeriodTransactionsModel.cpp
+    src/Gui/Transactions/FilteredTransactionsModel.cpp
+    src/Gui/Transactions/TransactionsDelegate.cpp
+    src/Gui/Transactions/TransactionsFrame.cpp
+    src/Gui/Transactions/TransactionTransfersRenderer.cpp
+    src/main.cpp
+    src/Miner/Miner.cpp
+    src/Miner/StratumClient.cpp
+    src/Miner/Worker.cpp
+    src/Models/AddressBookModel.cpp
+    src/Models/BlockchainModel.cpp
+    src/Models/FusionTransactionsFilterModel.cpp
+    src/Models/MinerModel.cpp
+    src/Models/NodeStateModel.cpp
+    src/Models/SortedAddressBookModel.cpp
+    src/Models/SortedTransactionsModel.cpp
+    src/Models/TransactionPoolModel.cpp
+    src/Models/TransactionsModel.cpp
+    src/Models/TransfersModel.cpp
+    src/Models/WalletStateModel.cpp
+    src/QJsonRpc/JsonRpcNotification.cpp
+    src/QJsonRpc/JsonRpcObject.cpp
+    src/QJsonRpc/JsonRpcObjectFactory.cpp
+    src/QJsonRpc/JsonRpcRequest.cpp
+    src/QJsonRpc/JsonRpcResponse.cpp
+    src/QJsonRpc/JsonRpcServer.cpp
+    src/Settings/Settings.cpp
+    src/Style/DarkStyle.cpp
+    src/Style/LightStyle.cpp
+    src/Style/Style.cpp
+    src/WalletLogger/WalletLogger.cpp)
 
-file(GLOB_RECURSE SOURCES src/*.cpp)
-file(GLOB_RECURSE HEADERS src/*.h)
-file(GLOB_RECURSE FORMS src/gui/ui/*.ui)
+    
+    
+    #file(GLOB_RECURSE SOURCES src/*.cpp)
+#file(GLOB_RECURSE HEADERS "${PROJECT_SOURCE_DIR}src/*.h)
 
-if(MSVC)
-  include_directories(Platform/Windows)
-  set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/Windows/ApplicationEventHandler.cpp)
-elseif(APPLE)
-  include_directories(Platform/OSX)
-  include_directories(Platform/Posix)
-  #set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/OSX/*)
-  set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/OSX/ApplicationEventHandler.mm)
-  set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/Posix/System/MemoryMappedFile.cpp)
-else()
-  include_directories(Platform/Linux)
-  include_directories(Platform/Posix)
-  set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/Linux/ApplicationEventHandler.cpp)
-  set(SOURCES ${SOURCES} ${CMAKE_SOURCE_DIR}/Platform/Posix/System/MemoryMappedFile.cpp)
-endif()
+file(GLOB_RECURSE FORMS "${PROJECT_SOURCE_DIR}src/gui/ui/*.ui")
 
-
-set(QRC src/resources.qrc)
-
+set(QRC "${PROJECT_SOURCE_DIR}/src/resources.qrc")
 qt5_wrap_ui(UIS ${FORMS})
 qt5_add_resources(RCC ${QRC})
 
-if (WIN32)
-  if (NOT MSVC)
-    message(FATAL_ERROR "Only MSVC is supported on this platform")
-  endif ()
 
-  set(STATIC ${MSVC} CACHE BOOL "Link libraries statically")
+set(BUILD_RESOURCES "${PROJECT_SOURCE_DIR}/src/alloywallet.rc")
 
-  if(STATIC)
-    foreach(VAR CMAKE_C_FLAGS_DEBUG CMAKE_CXX_FLAGS_DEBUG CMAKE_C_FLAGS_RELWITHDEBINFO CMAKE_CXX_FLAGS_RELWITHDEBINFO CMAKE_C_FLAGS_RELEASE CMAKE_CXX_FLAGS_RELEASE)
-      string(REPLACE "/MD" "/MT" ${VAR} "${${VAR}}")
-    endforeach()
-  endif()
 
-  add_definitions(/D_CRT_SECURE_NO_WARNINGS /D_WIN32_WINNT=0x0600 /DSTATICLIB)
-  include_directories(alloy/src/Platform/msc)
-  link_directories(alloy/external/rocksdb)
 
-  set(PLATFORM_DIR Windows)
-  set(BUILD_PLATFORM WIN32)
-  set(BUILD_RESOURCES src/alloywallet.rc)
-  set(QTMAIN Qt5::WinMain)
+    
+if(WIN32)
+    set(SOURCES ${SOURCES} Platform/Windows/ApplicationEventHandler.cpp)
+    
+        add_definitions(/D_CRT_SECURE_NO_WARNINGS /D_WIN32_WINNT=0x0600)
+        include_directories(
+            alloy/src/Platform/msc
+            alloy/src/Platform/Windows
+            Platform/Windows)
+        set(BUILD_PLATFORM WIN32)
+        set(Qt5_MAIN Qt5::WinMain)
+    
+endif()
 
-elseif (UNIX)
 
-  add_custom_target(
-     rocksdb
-     COMMAND make static_lib -Wno-undef -Wno-unused-result -Wno-unused-value
-     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/alloy/external/rocksdb
-  )
-  add_library(rocksdblib STATIC IMPORTED GLOBAL)
-  set_target_properties(rocksdblib PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/alloy/external/rocksdb/librocksdb.a)
-  add_dependencies(rocksdblib rocksdb)
 
-  set(CRYPTONOTE_SOURCES ${CRYPTONOTE_SOURCES} alloy/external/miniupnpc/minissdpc.c)
-
-  if (APPLE)
-    enable_language(ASM)
-    file(GLOB_RECURSE OBJC_SOURCES src/*.mm)
-    set(SOURCES ${SOURCES} ${OBJC_SOURCES})
-    set(PLATFORM_DIR OSX)
-    set(MACOSX_BUNDLE_INFO_STRING "Cryptonote GUI wallet")
-    set(MACOSX_BUNDLE_LONG_VERSION_STRING "${VERSION_VERSION}.${VERSION_MINOR}.${VERSION_PATCH}")
-    set(MACOSX_BUNDLE_BUNDLE_NAME AlloyWallet)
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${VERSION_VERSION}.${VERSION_MINOR}.${VERSION_PATCH}")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION "$${VERSION_VERSION}.${VERSION_MINOR}.${VERSION_PATCH}")
-
-    find_package(Qt5PrintSupport REQUIRED)
-
-    include_directories(/usr/include/malloc)
-
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes  -stdlib=libc++")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c11 -maes -D_DARWIN_C_SOURCE")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Cocoa -framework OpenGL -framework CoreFoundation -framework Carbon -framework IOKit -L/usr/lib")
-
-    set(MACOSX_BUNDLE_ICON_FILE alloy.icns)
-    set(APPLICATION_ICON src/images/alloy.icns)
-    set_source_files_properties(${APPLICATION_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-
-    set(BUILD_PLATFORM MACOSX_BUNDLE)
-    set(BUILD_RESOURCES ${APPLICATION_ICON})
-
-    GET_TARGET_PROPERTY(QT_LIB_DIR "${Qt5Widgets_LIBRARIES}" LOCATION)
-    GET_FILENAME_COMPONENT(QT_LIB_DIR "${QT_LIB_DIR}" PATH)
-
-  else(APPLE)
-
-    set(PLATFORM_DIR Linux)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -maes -std=c++14")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -maes ")
-  endif (APPLE)
-endif ()
-
-include_directories(alloy/src/Platform/${PLATFORM_DIR})
-file(GLOB PLATFORM_SOURCES alloy/src/Platform/${PLATFORM_DIR}/System/*)
-set(CRYPTONOTE_SOURCES ${CRYPTONOTE_SOURCES} ${PLATFORM_SOURCES} ${CRYPTONOTE_PLATFORM})
-
-add_library(${CRYPTONOTE_LIB} STATIC ${CRYPTONOTE_SOURCES})
-set_target_properties(${CRYPTONOTE_LIB} PROPERTIES COMPILE_DEFINITIONS _GNU_SOURCE)
-target_link_libraries(${CRYPTONOTE_LIB} ${Boost_LIBRARIES} ${Qt5DBus_LIBRARIES} rocksdblib)
-
+# Include boost
+#include_directories(${Boost_INCLUDE_DIRS})
+# Link our externalproject *.lib's
+link_directories(
+    ${Boost_LIBRARY_DIRS}
+    /opt/alloy/libs)
+# Build AlloyWallet.exe
+#add_executable(${PROJECT_NAME} ${BUILD_PLATFORM} ${SOURCES})
 add_executable(${PROJECT_NAME} ${BUILD_PLATFORM} ${BUILD_RESOURCES} ${SOURCES} ${HEADERS} ${UIS} ${RCC})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS _GNU_SOURCE)
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES} ${QTMAIN} ${CRYPTONOTE_LIB} ${Qt5DBus_LIBRARIES} rocksdblib)
+target_compile_definitions(${PROJECT_NAME} PUBLIC -DGIT_REVISION="${GIT_REVISION}")
+target_include_directories(${PROJECT_NAME} PUBLIC
+    include
+    src
+    alloy/include
+    alloy/src
+    alloy/external/rocksdb/include
+    ${Boost_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME}
+    ${Qt5_MAIN}
+    ${Qt5DBus_LIBRARIES}
+    BlockchainExplorer
+    Common
+    Crypto
+    CryptoNoteCore
+    Http
+    InProcessNode
+    Logging
+    NodeRpcProxy
+    P2p
+    Rpc
+    Serialization
+    System
+    Transfers
+    Wallet
+    rocksdblib
+    miniupnpc
+    Qt5::Widgets
+    Qt5::Gui
+    Qt5::Network
+    Imm32 Iphlpapi Rpcrt4 Winmm Wtsapi32) 
 
-if (APPLE)
-  qt5_use_modules(${PROJECT_NAME} PrintSupport)
-elseif (UNIX)
-  target_link_libraries(${PROJECT_NAME} -lpthread)
-elseif (WIN32)
-  target_link_libraries(${PROJECT_NAME} Imm32 Iphlpapi Winmm UxTheme d3d9 dxguid Rpcrt4 Wtsapi32 Dwmapi "${_qt5Widgets_install_prefix}/lib/qtharfbuzz.lib" "${_qt5Widgets_install_prefix}/lib/qtlibpng.lib" "${_qt5Widgets_install_prefix}/lib/qtpcre.lib" "${_qt5Widgets_install_prefix}/lib/Qt5EventDispatcherSupport.lib" "${_qt5Widgets_install_prefix}/lib/Qt5OpenGL.lib" "${_qt5Widgets_install_prefix}/lib/Qt5AccessibilitySupport.lib" "${_qt5Widgets_install_prefix}/lib/Qt5ThemeSupport.lib" "${_qt5Widgets_install_prefix}/lib/libGLESv2.lib" "${_qt5Widgets_install_prefix}/lib/libEGL.lib" "${_qt5Widgets_install_prefix}/lib/qtfreetype.lib" "${_qt5Widgets_install_prefix}/lib/Qt5FontDatabaseSupport.lib" "${_qt5Widgets_install_prefix}/lib/preprocessor.lib" "${_qt5Widgets_install_prefix}/lib/translator.lib" "${_qt5Widgets_install_prefix}/plugins/platforms/qwindows.lib")
-endif (APPLE)
 
-qt5_use_modules(${PROJECT_NAME} Widgets Gui Network)
-
+    
+        
+  

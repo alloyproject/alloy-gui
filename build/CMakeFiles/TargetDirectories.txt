@@ -1,0 +1,3 @@
+C:/opt/alloy-gui/build/CMakeFiles/AlloyWallet.dir
+C:/opt/alloy-gui/build/CMakeFiles/ALL_BUILD.dir
+C:/opt/alloy-gui/build/CMakeFiles/ZERO_CHECK.dir

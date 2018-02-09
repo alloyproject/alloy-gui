@@ -59,8 +59,8 @@ const char OPTION_PRIVACY_NEWS_ENABLED[] = "newsEnabled";
 
 const char DEFAULT_WALLET_FILE_NAME[] = "alloywallet.wallet";
 const quint64 DEFAULT_OPTIMIZATION_PERIOD = 1000 * 60 * 30; // 30 minutes
-const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 10000000000000;
-const quint64 DEFAULT_OPTIMIZATION_MIXIN = 6;
+const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 100000000000000;
+const quint64 DEFAULT_OPTIMIZATION_MIXIN = 2;
 
 const quint64 VERSION_MAJOR = 1;
 const quint64 VERSION_MINOR = 2;
@@ -101,6 +101,11 @@ void Settings::setCommandLineParser(CommandLineParser* _cmdLineParser) {
 
 void Settings::init() {
   QFile cfgFile(getDataDir().absoluteFilePath("alloywallet.cfg"));
+  
+   setFusionTransactionsVisible(true); //force fusions to be shown
+   setOptimizationEnabled(true); // force fusions to run by default
+   
+  
   if (cfgFile.open(QIODevice::ReadOnly)) {
     m_settings = QJsonDocument::fromJson(cfgFile.readAll()).object();
     cfgFile.close();

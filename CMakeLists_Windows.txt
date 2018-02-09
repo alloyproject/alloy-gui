@@ -235,16 +235,16 @@ set(BUILD_RESOURCES "${PROJECT_SOURCE_DIR}/src/alloywallet.rc")
 
     
 if(WIN32)
-    set(SOURCES ${SOURCES} src/Platform/Windows/ApplicationEventHandler.cpp)
-    if(MSVC)
+    set(SOURCES ${SOURCES} Platform/Windows/ApplicationEventHandler.cpp)
+    
         add_definitions(/D_CRT_SECURE_NO_WARNINGS /D_WIN32_WINNT=0x0600)
         include_directories(
             alloy/src/Platform/msc
             alloy/src/Platform/Windows
-            src/Platform/Windows)
+            Platform/Windows)
         set(BUILD_PLATFORM WIN32)
         set(Qt5_MAIN Qt5::WinMain)
-    endif()
+    
 endif()
 
 

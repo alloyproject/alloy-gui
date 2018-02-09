@@ -135,8 +135,8 @@ void OptimizationOptionsFrame::setOptimizationManager(IOptimizationManager* _opt
 }
 
 void OptimizationOptionsFrame::initOptimizationPeriods() {
-  m_ui->m_periodCombo->addItem(tr("30 minutes"), 30 * MINUTE_MSECS);
-  m_ui->m_periodCombo->addItem(tr("1 hour"), HOUR_MSECS);
+  m_ui->m_periodCombo->addItem(tr("5 minutes"), 5 * MINUTE_MSECS);
+  m_ui->m_periodCombo->addItem(tr("30 minutes"), 30* MINUTE_MSECS);
   m_ui->m_periodCombo->addItem(tr("1.5 hours"), HOUR_MSECS + 30 * MINUTE_MSECS);
   m_ui->m_periodCombo->addItem(tr("2 hours"), 2 * HOUR_MSECS);
   m_ui->m_periodCombo->addItem(tr("2.5 hours"), 2 * HOUR_MSECS + 30 * MINUTE_MSECS);
