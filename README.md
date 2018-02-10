@@ -7,6 +7,10 @@ Portions Copyright (c) 2012-2017, The CryptoNote Developers, The Bytecoin Develo
 
 Alloy's GUI Wallet is licensed under the "MIT License" for more info, refer to the [License](LICENSE) file.
 
+# Download Releases
+https://github.com/alloy-project/alloy-gui/release
+
+
 # How to build for Ubuntu Linux
 
 ```sudo apt-get -y install build-essential libssl-dev libboost-all-dev```
