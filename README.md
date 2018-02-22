@@ -20,11 +20,11 @@ https://github.com/alloy-project/alloy-gui/releases
 ```sudo apt-get install qt5-default qttools5-dev-tools```
 
 
-```git clone https://github.com/alloy-project/alloy-gui```
+```git clone https://github.com/alloyproject/alloy-gui```
 
 ```cd alloy-gui```
 
-```git submodule add -f https://github.com/alloy-project/alloy```
+```git submodule add -f https://github.com/alloyproject/alloy```
 
 ```cd alloy-gui```
 
@@ -52,6 +52,8 @@ Open a Terminal and type:
 
 Download a copy of the alloy-gui source:
 
+```cd /opt```
+
 ```git clone https://github.com/alloy-project/alloy-gui```
 
 Enter the alloy-gui directory:
@@ -60,7 +62,11 @@ Enter the alloy-gui directory:
 
 Download the latest alloycoin codebase:
 
-```git submodule add -f https://github.com/alloy-project/alloy```
+```git submodule add -f https://github.com/alloyproject/alloy```
+
+Use the correct CMake File
+
+```cp CMakeLists_Mac.txt CMakeLists.txt```
 
 Create a build directory and enter it:
 
@@ -68,14 +74,19 @@ Create a build directory and enter it:
 
 Run the the cmake with your qt5 lib path:
 
-```cmake  -DCMAKE_PREFIX_PATH:STRING='/usr/local/opt/qt5/lib/cmake' ..```
+```/opt/homebrew/bin/cmake  -DCMAKE_PREFIX_PATH:STRING='/opt/homebrew/opt/qt5/lib/cmake' ..```
 
 Run make to build the wallet:
 
 ```make```
 
+Fix the Links
+
+```/opt/homebrew/opt/qt/bin/macdeployqt AlloyWallet.app/
+
+
 When the build has finished, to copy the Alloy GUi app into your Application folder type:
 
-```cp -r Alloy.app ~/Applications```
+```cp -r AlloyWallet.app ~/Applications```
 
 You can now run the Alloy GUI from Finder. Make sure that alloyd is running in a terminal window else the GUI will crash on startup.
