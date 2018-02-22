@@ -28,13 +28,15 @@ https://github.com/alloy-project/alloy-gui/releases
 
 ```cd alloy-gui```
 
+```cp CMakeLists_ubuntu.txt CMakeLists.txt```
+
 ```mkdir build ; cd build```
 
 ```cmake ..```
 
 ```make```
 
-```./Alloy```
+```./AlloyWallet```
 
 
 
