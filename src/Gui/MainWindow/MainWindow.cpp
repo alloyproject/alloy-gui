@@ -53,8 +53,8 @@ namespace WalletGui {
 namespace {
 
 const int MAX_RECENT_WALLET_COUNT = 10;
-const char COMMUNITY_FORUM_URL[] = "http://alloy.cash";
-const char REPORT_ISSUE_URL[] = "http://alloy.cash";
+const char COMMUNITY_FORUM_URL[] = "http://alloyproject.org";
+const char REPORT_ISSUE_URL[] = "http://alloyproject.org";
 
 const char DONATION_URL_DONATION_TAG[] = "donation";
 const char DONATION_URL_LABEL_TAG[] = "label";

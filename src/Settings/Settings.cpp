@@ -63,7 +63,7 @@ const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 100000000000000;
 const quint64 DEFAULT_OPTIMIZATION_MIXIN = 2;
 
 const quint64 VERSION_MAJOR = 1;
-const quint64 VERSION_MINOR = 3;
+const quint64 VERSION_MINOR = 4;
 const quint64 VERSION_PATCH = 0;
 
 }
@@ -77,9 +77,7 @@ Settings& Settings::instance() {
 Settings::Settings() : m_p2pBindPort(0), m_cmdLineParser(nullptr) {
   m_defaultPoolList << "alloypool.com:3333";
 m_defaultPoolList << "pit-b.cryptoknight.cc:5661";
-m_defaultPoolList << "alloy.reservoirmugs.com:3333";
 m_defaultPoolList << "xao.mine2gether.com:1117";
-m_defaultPoolList << "xao-us.labbinarymining.com:3333";
 m_defaultPoolList << "sg.alloy.cryptonight.me:3333";
 m_defaultPoolList << "pool.almsoft.net:3333";
 m_defaultPoolList << "xao.euminingpool.com:4444";
