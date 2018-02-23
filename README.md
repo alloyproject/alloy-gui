@@ -56,7 +56,7 @@ Download a copy of the alloy-gui source:
 
 ```cd /opt```
 
-```git clone https://github.com/alloy-project/alloy-gui```
+```git clone https://github.com/alloyproject/alloy-gui```
 
 Enter the alloy-gui directory:
 
