@@ -84,7 +84,7 @@ Run make to build the wallet:
 
 Fix the Links
 
-```/opt/homebrew/opt/qt/bin/macdeployqt AlloyWallet.app/
+```/opt/homebrew/opt/qt/bin/macdeployqt AlloyWallet.app/```
 
 
 When the build has finished, to copy the Alloy GUi app into your Application folder type:
