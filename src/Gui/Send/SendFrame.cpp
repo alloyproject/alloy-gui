@@ -194,10 +194,11 @@ void SendFrame::passwordChanged() {
 }
 
 void SendFrame::synchronizationProgressUpdated(quint32 _current, quint32 _total) {
-  if (_total - _current > MAXIMUM_UNSYNCED_BLOCKS_WHEN_SEND_AVAILABLE) {
+  /*if (_total - _current > MAXIMUM_UNSYNCED_BLOCKS_WHEN_SEND_AVAILABLE) {
     m_glassFrame->install(this);
     m_glassFrame->updateSynchronizationState(_current, _total);
-  }
+  }*/
+  
 }
 
 void SendFrame::synchronizationCompleted() {

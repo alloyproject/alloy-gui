@@ -63,8 +63,8 @@ const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 100000000000000;
 const quint64 DEFAULT_OPTIMIZATION_MIXIN = 2;
 
 const quint64 VERSION_MAJOR = 2;
-const quint64 VERSION_MINOR = 0;
-const quint64 VERSION_PATCH = 0;
+const quint64 VERSION_MINOR = 1;
+
 
 }
 
@@ -110,10 +110,8 @@ void Settings::setCommandLineParser(CommandLineParser* _cmdLineParser) {
 void Settings::init() {
   QFile cfgFile(getDataDir().absoluteFilePath("alloywallet.cfg"));
   
-   setFusionTransactionsVisible(true); //force fusions to be shown
-   setOptimizationEnabled(true); // force fusions to run by default
-   
-  
+
+      
   if (cfgFile.open(QIODevice::ReadOnly)) {
     m_settings = QJsonDocument::fromJson(cfgFile.readAll()).object();
     cfgFile.close();
@@ -430,7 +428,7 @@ bool Settings::isEncrypted() const {
 
 QString Settings::getVersion() const {
   QReadLocker lock(&m_lock);
-  return QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH);
+  return QString("%1.%2 |  %4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(m_settings.value(OPTION_WALLET_WALLET_FILE).toString());
 }
 
 QString Settings::getCurrentTheme() const {
