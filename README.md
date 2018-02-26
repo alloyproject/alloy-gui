@@ -26,8 +26,6 @@ https://github.com/alloyproject/alloy-gui/releases
 
 ```git submodule add -f https://github.com/alloyproject/alloy```
 
-```cd alloy-gui```
-
 ```cp CMakeLists_ubuntu.txt CMakeLists.txt```
 
 ```mkdir build ; cd build```
