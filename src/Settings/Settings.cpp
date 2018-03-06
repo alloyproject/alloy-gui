@@ -59,12 +59,12 @@ const char OPTION_PRIVACY_NEWS_ENABLED[] = "newsEnabled";
 
 const char DEFAULT_WALLET_FILE_NAME[] = "alloywallet.wallet";
 const quint64 DEFAULT_OPTIMIZATION_PERIOD = 1000 * 60 * 30; // 30 minutes
-const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 10000000000000;
-const quint64 DEFAULT_OPTIMIZATION_MIXIN = 6;
+const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 100000000000000;
+const quint64 DEFAULT_OPTIMIZATION_MIXIN = 2;
 
-const quint64 VERSION_MAJOR = 1;
-const quint64 VERSION_MINOR = 0;
-const quint64 VERSION_PATCH = 0;
+const quint64 VERSION_MAJOR = 2;
+const quint64 VERSION_MINOR = 2;
+
 
 }
 
@@ -75,7 +75,15 @@ Settings& Settings::instance() {
 
 
 Settings::Settings() : m_p2pBindPort(0), m_cmdLineParser(nullptr) {
-  m_defaultPoolList << "pool.democats.org:45600";
+  m_defaultPoolList << "alloypool.com:3333";
+m_defaultPoolList << "pit-b.cryptoknight.cc:5661";
+m_defaultPoolList << "xao.mine2gether.com:1117";
+m_defaultPoolList << "sg.alloy.cryptonight.me:3333";
+m_defaultPoolList << "pool.almsoft.net:3333";
+m_defaultPoolList << "xao.euminingpool.com:4444";
+m_defaultPoolList << "server1.xao.newpool.pw:4444";
+m_defaultPoolList << "alloy.hashat.me:3333";
+m_defaultPoolList << "xao.corpopool.com:443";  
 
   Style* lightStyle = new LightStyle();
   Style* darkStyle = new DarkStyle();
@@ -101,6 +109,9 @@ void Settings::setCommandLineParser(CommandLineParser* _cmdLineParser) {
 
 void Settings::init() {
   QFile cfgFile(getDataDir().absoluteFilePath("alloywallet.cfg"));
+  
+
+      
   if (cfgFile.open(QIODevice::ReadOnly)) {
     m_settings = QJsonDocument::fromJson(cfgFile.readAll()).object();
     cfgFile.close();
@@ -417,7 +428,7 @@ bool Settings::isEncrypted() const {
 
 QString Settings::getVersion() const {
   QReadLocker lock(&m_lock);
-  return QString("%1.%2.%3").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(VERSION_PATCH);
+  return QString("%1.%2 |  %4").arg(VERSION_MAJOR).arg(VERSION_MINOR).arg(m_settings.value(OPTION_WALLET_WALLET_FILE).toString());
 }
 
 QString Settings::getCurrentTheme() const {

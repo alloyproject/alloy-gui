@@ -326,6 +326,8 @@ void OverviewHeaderFrame::transactionPoolChanged() {
 
 void OverviewHeaderFrame::walletStateModelDataChanged(const QModelIndex& _topLeft, const QModelIndex& _bottomRight,
   const QVector<int>& _roles) {
+      
+   /*   
   if (_topLeft.column() == WalletStateModel::COLUMN_ABOUT_TO_BE_SYNCHRONIZED) {
     bool walletAboutToBeSynchronized = _topLeft.data().toBool();
     if (!walletAboutToBeSynchronized) {
@@ -333,13 +335,13 @@ void OverviewHeaderFrame::walletStateModelDataChanged(const QModelIndex& _topLef
       m_miningStatsGlassFrame->install(m_ui->m_overviewMiningFrame);
       m_transactionPoolGlassFrame->install(m_ui->m_overviewPoolFrame);
       m_syncMovie->start();
-    } else {
+    } else {*/
       m_balancesGlassFrame->remove();
       m_miningStatsGlassFrame->remove();
       m_transactionPoolGlassFrame->remove();
       m_syncMovie->stop();
-    }
-  }
+    //}
+  //}
 }
 
 void OverviewHeaderFrame::poolTransactionClicked(const QModelIndex& _index) {

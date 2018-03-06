@@ -152,10 +152,10 @@ public:
         m_feeSpin = new QDoubleSpinBox(m_sendFeeFrame);
         m_feeSpin->setObjectName(QStringLiteral("m_feeSpin"));
         m_feeSpin->setButtonSymbols(QAbstractSpinBox::UpDownArrows);
-        m_feeSpin->setSuffix(QStringLiteral("BCN"));
-        m_feeSpin->setDecimals(8);
+        m_feeSpin->setSuffix(QStringLiteral("XAO"));
+        m_feeSpin->setDecimals(3);
         m_feeSpin->setMinimum(0.01);
-        m_feeSpin->setMaximum(1e+09);
+        m_feeSpin->setMaximum(1000);
         m_feeSpin->setSingleStep(0.01);
         m_feeSpin->setValue(0.01);
 
@@ -205,7 +205,7 @@ public:
         m_mixinSlider->setMaximumSize(QSize(16777215, 16777215));
         m_mixinSlider->setMaximum(50);
         m_mixinSlider->setPageStep(1);
-        m_mixinSlider->setValue(7);
+        m_mixinSlider->setValue(1);
         m_mixinSlider->setTracking(false);
         m_mixinSlider->setOrientation(Qt::Horizontal);
 

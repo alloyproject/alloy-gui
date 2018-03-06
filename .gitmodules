@@ -1,0 +1,3 @@
+[submodule "alloy"]
+	path = alloy
+	url = https://github.com/alloy-project/alloy
