@@ -58,12 +58,12 @@ const char OPTION_PRIVACY_PARAMS[] = "privacyParams";
 const char OPTION_PRIVACY_NEWS_ENABLED[] = "newsEnabled";
 
 const char DEFAULT_WALLET_FILE_NAME[] = "alloywallet.wallet";
-const quint64 DEFAULT_OPTIMIZATION_PERIOD = 1000 * 60 * 30; // 30 minutes
-const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 100000000000000;
-const quint64 DEFAULT_OPTIMIZATION_MIXIN = 2;
+const quint64 DEFAULT_OPTIMIZATION_PERIOD = 1000 * 60 * 5; // 5 minutes
+const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 1000000000000; //1XAO target
+const quint64 DEFAULT_OPTIMIZATION_MIXIN = 0;
 
 const quint64 VERSION_MAJOR = 2;
-const quint64 VERSION_MINOR = 2;
+const quint64 VERSION_MINOR = 3;
 
 
 }
@@ -110,14 +110,28 @@ void Settings::setCommandLineParser(CommandLineParser* _cmdLineParser) {
 void Settings::init() {
   QFile cfgFile(getDataDir().absoluteFilePath("alloywallet.cfg"));
   
-
-      
   if (cfgFile.open(QIODevice::ReadOnly)) {
     m_settings = QJsonDocument::fromJson(cfgFile.readAll()).object();
+    
     cfgFile.close();
+  } else {
+      //stuff in some good practice defaults
+        QJsonObject optimizationObject;
+   optimizationObject.insert(OPTION_WALLET_OPTIMIZATION_ENABLED, true);
+   optimizationObject.insert(OPTION_WALLET_OPTIMIZATION_FUSION_TARNSACTIONS_IS_VISIBLE, true);
+    m_settings.insert(OPTION_NODE_REMOTE_RPC_URL, QString("rpc.alloyproject.org:1811"));
+    
+    m_settings.insert(OPTION_WALLET_OPTIMIZATION, optimizationObject);
+    
+      
   }
+  
 
   restoreDefaultPoolList();
+  
+  
+  
+    
 }
 
 void Settings::restoreDefaultPoolList() {

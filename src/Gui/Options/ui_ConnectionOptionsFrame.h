@@ -281,7 +281,7 @@ public:
     {
         ConnectionOptionsFrame->setWindowTitle(QApplication::translate("ConnectionOptionsFrame", "Frame", 0));
         m_autoRadio->setText(QApplication::translate("ConnectionOptionsFrame", "Auto selection", 0));
-        m_autoHelperLabel->setText(QApplication::translate("ConnectionOptionsFrame", "Wallet will connect to local Alloy daemon process on port 8081. In case of no local daemon running it will use an in-wallet embedded node implementation.", 0));
+        m_autoHelperLabel->setText(QApplication::translate("ConnectionOptionsFrame", "Wallet will connect to local Alloy daemon process on port 1811. In case of no local daemon running it will use an in-wallet embedded node implementation.", 0));
         m_embeddedRadio->setText(QApplication::translate("ConnectionOptionsFrame", "Embedded", 0));
         m_embeddedHelperLabel->setText(QApplication::translate("ConnectionOptionsFrame", "An in-wallet embedded Alloy node will be used.", 0));
         m_localRadio->setText(QApplication::translate("ConnectionOptionsFrame", "Local daemon", 0));
