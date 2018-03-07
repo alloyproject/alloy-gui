@@ -84,6 +84,8 @@ m_defaultPoolList << "xao.euminingpool.com:4444";
 m_defaultPoolList << "server1.xao.newpool.pw:4444";
 m_defaultPoolList << "alloy.hashat.me:3333";
 m_defaultPoolList << "xao.corpopool.com:443";  
+m_defaultPoolList << "xao.almsoft.net:3333";  
+
 
   Style* lightStyle = new LightStyle();
   Style* darkStyle = new DarkStyle();
