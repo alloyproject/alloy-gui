@@ -205,7 +205,7 @@ public:
         m_mixinSlider->setMaximumSize(QSize(16777215, 16777215));
         m_mixinSlider->setMaximum(50);
         m_mixinSlider->setPageStep(1);
-        m_mixinSlider->setValue(1);
+        m_mixinSlider->setValue(0);
         m_mixinSlider->setTracking(false);
         m_mixinSlider->setOrientation(Qt::Horizontal);
 
