@@ -63,7 +63,7 @@ const quint64 DEFAULT_OPTIMIZATION_THRESHOLD = 1000000000000; //1XAO target
 const quint64 DEFAULT_OPTIMIZATION_MIXIN = 0;
 
 const quint64 VERSION_MAJOR = 3;
-const quint64 VERSION_MINOR = 0;
+const quint64 VERSION_MINOR = 1;
 
 
 }
